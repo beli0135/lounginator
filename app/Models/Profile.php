@@ -12,11 +12,10 @@ class Profile extends Model
     protected $fillable = [
         'user_id',
         'bio',
-        'site',
+        'url',
         'location',
         'birthday',
-        'followers',
-        'following',
+        'image',
     ];
 
     public function followers()

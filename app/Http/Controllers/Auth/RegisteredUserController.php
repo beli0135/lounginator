@@ -64,8 +64,10 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
+        $noimage=asset('images/noimage.png');
         $userProfile = Profile::create([
             'user_id' => $user->id,
+            'image' => $noimage,
         ]);
 
         DB::table('role_user')->insert(

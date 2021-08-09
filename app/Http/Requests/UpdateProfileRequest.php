@@ -25,6 +25,10 @@ class UpdateProfileRequest extends FormRequest
     {
         return [
             'name' => 'required|max:20|min:4',
+            'bio' => 'max:191',
+            'location' => 'max:50',
+            'url' => 'url|nullable',
+            'image' => 'image|nullable|max:1999|mimes:jpg,png,jpeg',
         ];
     }
 }

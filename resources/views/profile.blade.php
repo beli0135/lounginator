@@ -13,14 +13,38 @@
                     <x-auth-validation-errors class="mb-4" :errors="$errors" />
                     <x-success-message  />
 
-                    <form method="POST" action="{{ route('profile.update') }}">
+                    <form method="POST" action="{{ route('profile.update') }}" enctype="multipart/form-data">
                         @method('PUT')
                         @csrf
                         <div class="grid gird-cols-2 gap-6">
                             <div class="grid grid-rows-2 gap-6">
                                 <div>
-                                    <x-label for="name" :value="_('Name')" />
+                                    <x-label for="name" :value="__('lang.Name')" />
                                     <x-input id="name" class="block mt-1 w-full" type="text" name="name" value="{{ auth()->user()->name }}"/>
+                                </div>
+                                <div>
+                                    <x-label for="bio" :value="__('lang.Biography')" />
+                                    <x-input id="bio" class="block mt-1 w-full" type="text" name="bio" value="{{ auth()->user()->profile->bio }}"/>
+                                </div>
+                                <div>
+                                    <x-label for="url" :value="__('lang.Site')" />
+                                    <x-input id="url" class="block mt-1 w-full" type="text" name="url" value="{{ auth()->user()->profile->url }}"/>
+                                </div>
+                                <div>
+                                    <x-label for="location" :value="__('lang.Location')" />
+                                    <x-input id="location" class="block mt-1 w-full" type="text" name="location" value="{{ auth()->user()->profile->location }}"/>
+                                </div>
+                                <div>
+                                    <x-label for="birthday" :value="__('lang.Birthdate')" />
+                                    <x-input id="birthday" class="block mt-1 w-full" type="date" name="birthday" value="{{ auth()->user()->profile->birthday }}"/>
+                                </div>
+                                <div>
+                                    <x-label for="image" :value="__('lang.ProfileImage')" />
+                                    <x-input id="image" class="block mt-1 w-full" type="file" name="image"/>
+                                    @if ($errors->has('image'))
+                                      <strong>{{ $errors->first('image')}}</strong>
+                                    @endif
+
                                 </div>
                             </div>
                         </div>
