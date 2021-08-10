@@ -27,11 +27,18 @@ class ProfileController extends Controller
             $imgpathtostore = asset($storagePath).'/'.$newImageName;
         }
         
+        if ($request->input('nsfw') == null) {
+            $nsfw = false;
+        } else {
+            $nsfw = true;
+        }
+
         $array = array(
             'bio' => $request->input('bio'),
             'url' => $request->input('url'),
             'location' => $request->input('location'),
-            'birthday' => $request->input('birthday')
+            'birthday' => $request->input('birthday'),
+            'nsfw' => $nsfw,
         );
 
         if ($newImageName != '') {

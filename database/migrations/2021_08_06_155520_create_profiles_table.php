@@ -21,6 +21,7 @@ class CreateProfilesTable extends Migration
             $table->string('location')->nullable();
             $table->date('birthday')->nullable();
             $table->string('image')->nullable();
+            $table->boolean('nsfw')->default(false);
             $table->timestamps();
 
             $table->foreign('user_id')

@@ -11,4 +11,5 @@ return [
     'Location' => 'Location',
     'Birthdate' => 'Birth date',
     'ProfileImage' => 'Profile image (jpg,png < 2MB)',
+    'seeNSFW' => 'I want to see content marked as NSFW / Adult content'
 ];

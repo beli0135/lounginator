@@ -16,8 +16,25 @@
                     <form method="POST" action="{{ route('profile.update') }}" enctype="multipart/form-data">
                         @method('PUT')
                         @csrf
+                        
+                        @if (auth()->user()->profile->nsfw == 0)
+                        <div class="inline-flex space-x-4 pb-4"  >
+                            <x-input id="nsfw" class="block w-4" type="checkbox" name="nsfw" value="0" />
+                            <x-label for="name" class="inline" :value="__('lang.seeNSFW')" />
+                         </div>    
+                        @endif
+
+                        @if (auth()->user()->profile->nsfw == 1)
+                        <div class="inline-flex space-x-4 pb-4"  >
+                            <x-input id="nsfw" class="block w-4" type="checkbox" name="nsfw" value="0" checked="checked"/>
+                            <x-label for="name" class="inline" :value="__('lang.seeNSFW')" />
+                         </div>    
+                        @endif
+                        
                         <div class="grid gird-cols-2 gap-6">
+                            
                             <div class="grid grid-rows-2 gap-6">
+                                
                                 <div>
                                     <x-label for="name" :value="__('lang.Name')" />
                                     <x-input id="name" class="block mt-1 w-full" type="text" name="name" value="{{ auth()->user()->name }}"/>

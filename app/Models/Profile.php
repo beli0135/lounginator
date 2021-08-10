@@ -16,6 +16,7 @@ class Profile extends Model
         'location',
         'birthday',
         'image',
+        'nsfw',
     ];
 
     public function followers()
