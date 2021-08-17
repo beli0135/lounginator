@@ -11,5 +11,17 @@ return [
     'Location' => 'Location',
     'Birthdate' => 'Birth date',
     'ProfileImage' => 'Profile image (jpg,png < 2MB)',
-    'seeNSFW' => 'I want to see content marked as NSFW / Adult content'
+    'seeNSFW' => 'I want to see content marked as NSFW / Adult content',
+    'NSFWcontent' => 'NSFW / Adult content',
+    'Pages' => 'Pages',
+    'MyProfile' => 'My Profile',
+    'Articles' => 'Articles',
+    'CreateNewArticle' => 'Create New Article',
+    'NewArticle' => 'New Article',
+    'tweet_it' => 'Tweet it',
+    'tweetMessage' => 'This user has created a new article. Check it out: ',
+    'postadded' => 'Your article has been added!',
+    'edit' => 'Edit',
+    'delete' => 'Delete',
+
 ];

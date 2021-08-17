@@ -15,7 +15,15 @@
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('pages.index')" :active="request()->routeIs('pages.index')">
+                        {{ __('lang.Pages') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('posts.index')" :active="request()->routeIs('posts.index')">
+                        {{ __('lang.Articles') }}
+                    </x-nav-link>
                 </div>
+
+              
 
             </div>
 
@@ -82,8 +90,16 @@
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
-        </div>
+            
+            <x-responsive-nav-link  :href="route('pages.index')" :active="request()->routeIs('pages.index')">
+                {{ __('lang.Pages') }}
+            </x-responsive-nav-link >
 
+            <x-responsive-nav-link  :href="route('posts.index')" :active="request()->routeIs('posts.index')">
+                {{ __('lang.Articles') }}
+            </x-responsive-nav-link >
+        </div>
+        
         <!-- Responsive Settings Options -->
             
 

@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\Admin\ImageController;
+use App\Http\Controllers\PagesController;
+use App\Http\Controllers\PostsController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -22,13 +25,19 @@ Route::group(['middleware' => 'auth'], function() {
         return view('dashboard');
     })->name('dashboard');
 
-    //training profiles
+
     route::view('profile','profile')->name('profile');
     route::put('profile','App\Http\Controllers\ProfileController@store')->name('profile.update');
       
+    Route::get('/pages/index', [PagesController::class, 'index'])->name('pages.index');
+    Route::resource('/posts', PostsController::class);
+
+    
 });
 
 require __DIR__.'/auth.php';
 
 Route::get('/invitations/create', 'App\Http\Controllers\InvitationController@create');
 Route::post('/invitations','App\Http\Controllers\InvitationController@store');
+
+Route::post('/storage/imgs', [ImageController::class, 'store'])->name('images.store');
