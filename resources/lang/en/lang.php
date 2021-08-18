@@ -17,11 +17,14 @@ return [
     'MyProfile' => 'My Profile',
     'Articles' => 'Articles',
     'CreateNewArticle' => 'Create New Article',
+    'EditArticle' => 'Edit Article',
     'NewArticle' => 'New Article',
     'tweet_it' => 'Tweet it',
     'tweetMessage' => 'This user has created a new article. Check it out: ',
     'postadded' => 'Your article has been added!',
     'edit' => 'Edit',
     'delete' => 'Delete',
+    'areyousure' => 'Are you sure?',
+    'editedOn' => 'Edited on',
 
 ];

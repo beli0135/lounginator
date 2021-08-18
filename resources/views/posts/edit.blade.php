@@ -2,7 +2,7 @@
     <x-slot name="header">
         <div class="space-x-8 sm:-my-px sm:ml-10 sm:flex">    
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                {{ __('lang.CreateNewArticle') }}
+                {{ __('lang.EditArticle') }}
                 
             </h2>
             
@@ -29,43 +29,34 @@
                    
 
                     <form 
-                        action="/posts"
+                        action="/posts/{{ $post->slug }}"
                         method="POST"
                         enctype="multipart/form-data">
                         @csrf
-                        
+                        @method('PUT')
+
                         <div class="block mt-4">
                             <label for="isNSFW" class="inline-flex items-center">
                                 <input id="isNSFW" type="checkbox" class="rounded border-gray-300 text-indigo-600 
                                 shadow-sm focus:border-indigo-300 
                                 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" name="nsfw">
-                                <span class="ml-2 text-sm text-red-600 font-extrabold">{{ __('lang.NSFWcontent') }}</span>
+                                <span class="ml-2 text-sm text-red-600 font-extrabold" >{{ __('lang.NSFWcontent') }}</span>
                             </label>
                         </div>
-
-                        <div class="block mt-4">
-                            <label for="tweet_it" class="inline-flex items-center">
-                                <input id="tweet_it" type="checkbox" class="rounded border-gray-300 text-indigo-600 
-                                shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 
-                                focus:ring-opacity-50" name="tweet">
-                                <span class="ml-2 text-sm text-gray-600">{{ __('lang.tweet_it') }}</span>
-                            </label>
-                        </div>
-
 
                         <div class="pb-4 pt-2">
                             <input 
                                 type="text"
                                 name="title"
-                                placeholder="Title..."
+                                value="{{ $post->title }}"
                                 class="bg-gray-0 block border-b-1 w-full pb-4
                                 h-10 text-xl outline-none">
                         </div>
 
                         <div>
                             <textarea name="article-textarea" id="article-textarea"
-                                placeholder="Write your story here..."
                                 class="w-full">
+                                {{ $post->article }}
                             </textarea>
                         </div>
 

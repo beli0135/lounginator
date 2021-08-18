@@ -23,6 +23,13 @@ class Post extends Model implements HasMedia
         'user_id',
     ];    
 
+    public function getCoverImagePath()
+    {
+        $path = public_path() . '/' . $this->image_path;
+        
+        return $path;
+    }
+
     public function registerMediaConversions(Media $media = null): void
     {
         $this->addMediaConversion('thumb')

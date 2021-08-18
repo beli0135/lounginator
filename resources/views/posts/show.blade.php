@@ -4,23 +4,34 @@
             <h2 class="font-semibold text-xl text-indigo-800 leading-tight w-full">
                 {{$post->shortTitle()}}
             </h2>
-            @if (Auth::user()->id == $post->user_id)
+            @if (isset(Auth::user()->id) && (Auth::user()->id == $post->user_id))
                 <div class="w-full">
 
                 </div>
                 <div class="sm:flex space-x-2 ">
+                    
                     <a 
-                        href="/posts/edit"
+                        href="/posts/{{ $post->slug }}/edit"
                         class="bg-blue-500 uppercase text-xs text-gray-100
                         font-extrabold py-2 px-5 rounded-3xl">
                         {{ __('lang.edit') }}
                     </a>  
-                    <a 
-                        href="/posts/delete"
-                        class="bg-red-500 uppercase text-xs text-gray-100
-                        font-extrabold py-2 px-5 rounded-3xl">
-                        {{ __('lang.delete') }}
-                    </a>  
+                    
+                    
+                    <form  
+                        action="/posts/{{ $post->slug }}" 
+                        method="POST">
+                        @csrf
+                        @method('delete')
+
+                        <button 
+                            class="bg-red-500 uppercase text-xs text-gray-100
+                                font-extrabold py-2 px-5 rounded-3xl"
+                                type="submit" onclick="return confirm({{ __('lang.areyousure') }})">
+                            {{ __('lang.delete') }}
+                        </button>  
+                    
+                    </form>
                 </div>
             @endif
         </div>
