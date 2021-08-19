@@ -65,6 +65,9 @@ class PostsController extends Controller
         {
             $imagePath = $request->cvrimg->store('uploads','public');
         }    
+
+        
+
         if ($request->input('nsfw') == null) {
            $nsfw = false;
         } else {
@@ -75,8 +78,10 @@ class PostsController extends Controller
             $tweet = '';
          } else {
             $tweet = __('lang.tweetMessage') . 
-                '<a href="'. $slug . '">here</a>&nbsp;'
-            ;
+                '<a href="'. $slug . '">here</a>&nbsp; <br> #article';
+            if ($nsfw == true) {
+                $tweet .= ' #nsfw ';
+            }
          }
 
          $post = array(
@@ -89,7 +94,7 @@ class PostsController extends Controller
         );
         
         if ($imagePath != '') {
-            $array['image_path'] = $imagePath;
+            $post['image_path'] = $imagePath;
         }
         Post::create($post);
         

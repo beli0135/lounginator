@@ -49,7 +49,7 @@
                     <span class="text-gray-500 text-xs">
                         By <span class="font-bold italic text-gray-800">
                             {{ $post->user->name }}</span>
-                            {{ '@'.$post->user->username }}, Created on {{ date(DATE_RFC2822, strtotime($post->updated_at)) }}
+                            {{ '@'.$post->user->username }}, {{ __('lang.editedOn') }} {{ date(DATE_RFC2822, strtotime($post->updated_at)) }}
                     </span>
 
                     <p class="text-xl text-gray-700 pt-1 pb-5 leading-8 font-light">

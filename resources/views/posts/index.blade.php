@@ -30,9 +30,9 @@
                 <div class="p-6 bg-white border-b border-gray-200">
 
                     @foreach ($posts as $post)
-                    <div class="flex bg-gray-200 sm:rounded-lg shadow-sm mt-2" >
-                        <div class="inline w-20 pr-2 align-middle">
-                            <img src="{{ Auth::user()->profile->image }}" width="50" alt="">
+                    <div class="flex bg-gray-200 sm:rounded-lg shadow-sm mt-2 align-middle" >
+                        <div class="inline w-20 pr-2 pl-1 align-middle">
+                            <img class="rounded-full border border-gray-100 shadow-sm max-h-12" src="{{ $post->user->profile->image }}"  alt="" >
                         </div>
                         <a href="/posts/{{ $post->slug }}" class="w-full">
                         <div class="inline w-full align-middle pb-0" >
@@ -50,10 +50,11 @@
                                 {{ $post->article }}
                             </p> --}}
                         </div></a>   
-                        <div class="w-26 pr-2 pl-2 pt-3 align-middle">
-                            <button>{{ storage_path('app/').$post->image_path }}</button>
-                            <img src="{{ storage_path('app/').$post->image_path }}"  height="50" >
-                        </div>
+                        {{-- <div class="w-26 pr-2 pl-2 pt-3 pb-2 align-middle">
+                            @if ( $post->image_path !='')
+                                <img src="{{ asset("storage/{$post->image_path}")  }}" height="45px" width="45px"  >
+                            @endif
+                        </div> --}}
                     </div>      
                     @endforeach
                     {{$posts->links()}}  {{-- adds pagination links--}}
