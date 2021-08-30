@@ -35,14 +35,16 @@
                         @csrf
                         @method('PUT')
 
-                        <div class="block mt-4">
-                            <label for="isNSFW" class="inline-flex items-center">
-                                <input id="isNSFW" type="checkbox" class="rounded border-gray-300 text-indigo-600 
-                                shadow-sm focus:border-indigo-300 
-                                focus:ring focus:ring-indigo-200 focus:ring-opacity-50" name="nsfw">
-                                <span class="ml-2 text-sm text-red-600 font-extrabold" >{{ __('lang.NSFWcontent') }}</span>
-                            </label>
-                        </div>
+                        @if (env('CUSTOM_NSFW_EXISTS') == true)
+                            <div class="block mt-4">
+                                <label for="isNSFW" class="inline-flex items-center">
+                                    <input id="isNSFW" type="checkbox" class="rounded border-gray-300 text-indigo-600 
+                                    shadow-sm focus:border-indigo-300 
+                                    focus:ring focus:ring-indigo-200 focus:ring-opacity-50" name="nsfw">
+                                    <span class="ml-2 text-sm text-red-600 font-extrabold" >{{ __('lang.NSFWcontent') }}</span>
+                                </label>
+                            </div>
+                        @endif
 
                         <div class="pb-4 pt-2">
                             <input 

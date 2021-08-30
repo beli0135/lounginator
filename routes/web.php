@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\ImageController;
 use App\Http\Controllers\PagesController;
 use App\Http\Controllers\PostsController;
+use App\Http\Controllers\TweetController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -29,8 +30,20 @@ Route::group(['middleware' => 'auth'], function() {
     route::view('profile','profile')->name('profile');
     route::put('profile','App\Http\Controllers\ProfileController@store')->name('profile.update');
       
+
+    //pages
     Route::get('/pages/index', [PagesController::class, 'index'])->name('pages.index');
+
+    //posts
+
     Route::resource('/posts', PostsController::class);
+
+    //tweets
+    Route::get('/tweets/index', [TweetController::class, 'index'])->name('tweets.index');
+    Route::get('/tweets/h/{param}', [TweetController::class, 'indexHashtag'])->name('tweets.indexHashtag');
+    Route::post('/tweets/index', [TweetController::class, 'makeUserFavorite'])->name('tweets.makeUserFavorite');
+
+     
 
     
 });

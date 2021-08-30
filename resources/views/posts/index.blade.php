@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="space-x-8 sm:-my-px sm:ml-10 sm:flex">    
+        <div class="space-x-4 -my-px ml-8 flex w-full">    
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 {{ __('lang.Articles') }}
                 
@@ -9,7 +9,7 @@
                 <a 
                     href="/posts/create"
                     class="bg-blue-500 uppercase text-xs text-gray-100
-                    font-extrabold py-3 px-5 rounded-3xl">
+                    font-extrabold py-2 px-3 rounded-3xl">
                     {{ __('lang.NewArticle') }}
                 </a>    
             </div>

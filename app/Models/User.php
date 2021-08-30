@@ -56,12 +56,12 @@ class User extends Authenticatable
         
     public function roles()
     {
-        return $this->belongsToMany('App\Models\Role');
+        return $this->belongsToMany(Role::class);
     }
 
-    public function post()
+    public function posts()
     {
-        return $this->hasMany(Post::class);
+        return $this->hasMany(Post::class, 'user_id');
     }
 
 }

@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Post;
-use Illuminate\Support\Facades\DB;
+use App\Models\Hashtag;
 use Cviebrock\EloquentSluggable\Services\SlugService;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
+ 
 //use Intervention\Image\Facades\Image;
 
 class PostsController extends Controller
@@ -15,8 +18,7 @@ class PostsController extends Controller
         $this->middleware('auth',['except' => []]);
     }
 
-  
-
+    
     /**
      * Display a listing of the resource.
      *
@@ -78,9 +80,10 @@ class PostsController extends Controller
             $tweet = '';
          } else {
             $tweet = __('lang.tweetMessage') . 
-                '<a href="'. $slug . '">here</a>&nbsp; <br> #article';
+                '<a href="'. env('APP_URL') . '/posts/' . $slug . 
+                    '"><font color="green">&rarr; here</font></a>&nbsp; <br> <font color="blue"><a href="/tweets/h/article">#article</a></font>';
             if ($nsfw == true) {
-                $tweet .= ' #nsfw ';
+                $tweet .= ' <font color="blue"><a href="/tweets/h/nsfw">#nsfw</a></font> ';
             }
          }
 
@@ -96,7 +99,16 @@ class PostsController extends Controller
         if ($imagePath != '') {
             $post['image_path'] = $imagePath;
         }
-        Post::create($post);
+        $pst = Post::create($post);
+
+        if ($tweet != ''){
+            $hashtag = array('post_id' => $pst->id, 'hashtag' => 'article');
+            Hashtag::create($hashtag);
+            if ($nsfw == true){
+                $hashtag = array('post_id' => $pst->id, 'hashtag' => 'nsfw');
+                Hashtag::create($hashtag);
+            }
+        }
         
         return redirect('/posts');//->with('message',__('lang.postadded'));
     }
@@ -176,6 +188,10 @@ class PostsController extends Controller
     public function destroy($slug)
     {
         $post = Post::where('slug', $slug);
+        $image = DB::table('posts')->where('slug', $slug)->value('image_path');
+        if ($image != '') {
+            Storage::delete('/public/' . $image);
+        }
         $post->delete();
 
         return redirect('/posts');

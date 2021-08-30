@@ -26,5 +26,7 @@ return [
     'delete' => 'Delete',
     'areyousure' => 'Are you sure?',
     'editedOn' => 'Edited on',
+    'tweets' => 'Tweets',
+    'tweet' => 'Tweet',
 
 ];

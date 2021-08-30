@@ -8,6 +8,7 @@ use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Cviebrock\EloquentSluggable\Sluggable;
+use Carbon\Carbon;
 
 class Post extends Model implements HasMedia
 {
@@ -22,6 +23,11 @@ class Post extends Model implements HasMedia
         'nsfw',
         'user_id',
     ];    
+
+    public function hashtags()
+    {
+        $this->hasMany(Hashtag::class);
+    }
 
     public function getCoverImagePath()
     {
@@ -48,7 +54,7 @@ class Post extends Model implements HasMedia
 
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function sluggable():array
@@ -58,5 +64,14 @@ class Post extends Model implements HasMedia
                 'source' => 'title'
             ]
         ];
+    }
+
+    public function getPassedTime()
+    {
+        //$d1 = new Carbon($this->updated_at);
+        //$d2 = Carbon::now();
+        $diff = Carbon::parse($this->updated_at)->diffForHumans();
+        
+        return $diff;
     }
 }

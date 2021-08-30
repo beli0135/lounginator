@@ -17,7 +17,7 @@ class Posts extends Migration
             $table->increments('id');
             $table->unsignedInteger('user_id');
             $table->string('slug');
-            $table->string('tweet')->nullable();
+            $table->mediumText('tweet')->nullable();
             $table->string('title')->nullable();
             $table->longText('article')->nullable();
             $table->string('image_path')->nullable();
