@@ -28,5 +28,7 @@ return [
     'editedOn' => 'Edited on',
     'tweets' => 'Tweets',
     'tweet' => 'Tweet',
+    'success' => 'Success',
+    'yourpost' => 'It is your post'
 
 ];

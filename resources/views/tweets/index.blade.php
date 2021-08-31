@@ -16,13 +16,7 @@
         </div>
     </x-slot>
 
-    @if (session()->has('message'))
-        <div class="w-4/5 m-auto mt-10 pl-2">
-            <p class="w-2/6 mb-4 text-gray-100 bg-green-500 rounded-2xl py-4">
-                {{ session()->get('message') }}
-            </p>
-        </div>
-    @endif
+    
 
     <div class="flex py-12 flex-col-3 ">
         <div class="bg-gray-300 w-1/4 hidden md:block">
@@ -31,12 +25,12 @@
             <a href="/tweets/h/hash">hash</a>
         </div>
 
-        <div class="w-4/6 visible" >
+        <div class="w-4/6 visible " >
             @foreach ($posts as $post)
                 @if ($post->tweet == '')
                     @continue
                 @endif
-                <div class="flex flex-col-2 pt-1">
+                <div class="flex flex-col-2 pt-1" id="{{ $post->id }}">
                     <div class="inline w-20 pr-2 pl-1 align-middle">
                         <img class="rounded-full border border-gray-100 shadow-sm h-14 w-14 flex items-center justify-center" src="{{ $post->user->profile->image }}"  alt="" >
                     </div>
@@ -64,12 +58,23 @@
                                 </x-slot> 
                                 
                                 <x-slot name="content">
-                                    <x-dropdown-link :href="route('tweets.makeUserFavorite')">
-                                        <div class="flex flex-col-2 w-32 space-x-2" >
-                                            <img src="{{ asset('/images/heartadd.png') }}" width="24">
-                                            <p>Favorite user</p>
-                                        </div>
-                                    </x-dropdown-link>
+                                    
+                                    <form method="POST" action="{{ route('tweets.makeUserFavorite') }}#anchor">
+                                        @csrf
+                                        <x-dropdown-link :href="route('tweets.makeUserFavorite')"
+                                                onclick="event.preventDefault();
+                                                this.closest('form').submit();">
+
+                                            <div class="flex flex-col-2 w-32 space-x-2" >
+                                                <img src="{{ asset('/images/heartadd.png') }}" width="24">
+                                                <p>Favorite user</p>
+                                            </div>
+                                            <input type="hidden" name="id" value="{{ $post->id }}">
+                                            <input type="hidden" name="user_id" value="{{ $post->user_id }}">
+                                            
+                                        </x-dropdown-link>
+                                    </form>
+                                    
                                     <x-dropdown-link :href="route('profile')">
                                         <div class="flex flex-col-2 w-32 space-x-2" >
                                             <img src="{{ asset('/images/mute.png') }}" width="24">
@@ -105,8 +110,24 @@
             {{$posts->links()}}  {{-- adds pagination links--}}
         </div>
 
-        <div class="bg-gray-300  w-1/5  hidden md:block">
-            <p>3</p>
+        <div class="pl-3 w-1/5  hidden md:block">
+            {{-- <x-auth-validation-errors class="mb-4" :errors="$errors" />
+            <x-success-message class="mb-2 text-sm text-blue-700" /> --}}
+            @if (session()->has('message'))
+                <div class="w-full rounded-2xl bg-green-500  align-middle justify-items-center">
+                    <strong><p class="pl-2 text-sm text-gray-200 justify-center">
+                        {{ session()->get('message') }}
+                    </p></strong>
+                </div>
+            @endif
+            @if (session()->has('error'))
+                <div class="w-full rounded-2xl bg-red-500  align-middle justify-items-center">
+                    <strong><p class="pl-2 text-sm text-gray-200 justify-center">
+                        {{ session()->get('error') }}
+                    </p></strong>
+                </div>
+            @endif
         </div>
     </div>
+
 </x-app-layout>

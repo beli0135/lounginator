@@ -21,7 +21,8 @@ class UserRelations extends Migration
             $table->boolean('URR_isMuted')->default(false);
             $table->boolean('URR_isBlocked')->default(false);
             
-            $table->timestamps();
+            $table->timestamp('URR_created_at', 0)->nullable();
+            $table->timestamp('URR_updated_at', 0)->nullable();
 
             $table->foreign('URR_cdiUser')->references('id')->on('users')->onDelete('cascade');
             $table->index('URR_cdiUserRelated');
