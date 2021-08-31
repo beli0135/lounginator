@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Post;
 use App\Models\Hashtag;
-use Cviebrock\EloquentSluggable\Services\SlugService;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 
@@ -41,9 +40,24 @@ class TweetController extends Controller
         return view('tweets.index')->with('posts',$posts);    
     }
 
-    public function makeUserFavorite($postId)
+    public function makeUserFavorite( request $request)
     {   
+        $user_id = $request->user_id;
+        $currentUser = auth()->user()->id;
         
+        if ($user_id == $currentUser) {
+            return redirect()->route('tweets.index')->with('error',__('yourpost'));
+        }
+
+        $record = DB::select('select URR_cdiUserRelation from user_relations where URR_CdiUser = ? and URR_CdiUserRelated = ?', [$currentUser,$user_id]);
+        if (isset($record[0])){
+            //dd($record[0]->URR_cdiUserRelation); //ovo je ID
+            DB::statement('UPDATE user_relations SET URR_isFavorite = ?, URR_updated_at = ? where URR_CdiUser = ? and URR_CdiUserRelated = ? ',[true,now(),$currentUser,$user_id]);
+        } else {
+            DB::statement('INSERT INTO user_relations (URR_CdiUser,URR_CdiUserRelated,URR_isFavorite,URR_created_at,URR_updated_at) VALUES (?,?,?,?,?)',[$currentUser,$user_id,true,now(),now()]);
+        }
+        
+        return redirect(route('tweets.index') . '#' . $request->id);
     }
 
     
