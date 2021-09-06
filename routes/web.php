@@ -37,13 +37,18 @@ Route::group(['middleware' => 'auth'], function() {
     //posts
 
     Route::resource('/posts', PostsController::class);
+    
 
     //tweets
     Route::get('/tweets/index', [TweetController::class, 'index'])->name('tweets.index');
     Route::get('/tweets/h/{param}', [TweetController::class, 'indexHashtag'])->name('tweets.indexHashtag');
-    Route::post('/tweets/index}', [TweetController::class, 'makeUserFavorite'])->name('tweets.makeUserFavorite');
-
-     
+    
+    Route::post('1_tw_fav', [TweetController::class, 'makeUserFavorite'])->name('tweets.makeUserFavorite');
+    Route::post('2_tw_mute', [TweetController::class, 'makeUserMute'])->name('tweets.makeUserMute');
+    Route::post('3_tw_block', [TweetController::class, 'makeUserBlocked'])->name('tweets.makeUserBlocked');
+    Route::post('4_tw_report', [TweetController::class, 'reportTweet'])->name('tweets.reportTweet');
+    
+    Route::post('createTweet',[TweetController::class, 'createTweet'])->name('createTweet');
 
     
 });

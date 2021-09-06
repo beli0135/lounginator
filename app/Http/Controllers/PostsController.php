@@ -29,9 +29,9 @@ class PostsController extends Controller
         $nsfw = auth()->user()->profile->showNSFW();
 
         if ($nsfw == 1) {
-            $posts = POST::wherein('nsfw',[0,1])->orderBy('updated_at','DESC')->Paginate(25);
+            $posts = POST::wherein('nsfw',[0,1])->orderBy('updated_at','DESC')->limit(300)->Paginate(25);
         } else {
-            $posts = POST::where('nsfw','=',0)->orderBy('updated_at','DESC')->paginate(25);    
+            $posts = POST::where('nsfw','=',0)->orderBy('updated_at','DESC')->limit(300)->paginate(25);    
         }
         
         return view('posts.index')->with('posts',$posts);
@@ -102,10 +102,10 @@ class PostsController extends Controller
         $pst = Post::create($post);
 
         if ($tweet != ''){
-            $hashtag = array('post_id' => $pst->id, 'hashtag' => 'article');
+            $hashtag = array('HTG_post_id' => $pst->id, 'HTG_hashtag' => 'article');
             Hashtag::create($hashtag);
             if ($nsfw == true){
-                $hashtag = array('post_id' => $pst->id, 'hashtag' => 'nsfw');
+                $hashtag = array('HTG_post_id' => $pst->id, 'HTG_hashtag' => 'nsfw');
                 Hashtag::create($hashtag);
             }
         }

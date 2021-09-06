@@ -77,7 +77,7 @@
                              tracking-wide border border-blue cursor-pointer">
                                 <span class="mt-1 text-base leading-normal 
                                 text-small text-gray-200">
-                                    Cover Image
+                                    {{ __('lang.coverimage') }}
                                 </span>
                                 <input type="file" name="cvrimg" class="hidden">
                             </label>
@@ -91,7 +91,7 @@
                             tracking-wide border text-base leading-normal 
                             text-small text-gray-200
                            border-blue cursor-pointer">
-                            Save Article
+                           {{ __('lang.SaveArticle') }}
                         </button>
                         </div>
 

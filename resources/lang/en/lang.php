@@ -19,6 +19,7 @@ return [
     'CreateNewArticle' => 'Create New Article',
     'EditArticle' => 'Edit Article',
     'NewArticle' => 'New Article',
+    'SaveArticle' => 'Save Article',
     'tweet_it' => 'Tweet it',
     'tweetMessage' => 'This user has created a new article. Check it out: ',
     'postadded' => 'Your article has been added!',
@@ -29,6 +30,16 @@ return [
     'tweets' => 'Tweets',
     'tweet' => 'Tweet',
     'success' => 'Success',
-    'yourpost' => 'It is your post'
+    'yourpost' => 'It is your post',
+    'favoriteuser' => 'Favorite user',
+    'muteuser' => 'Mute user',
+    'blockuser' => 'Block user',
+    'reporttweet' => 'Report tweet',
+    'refresh' => 'Refresh',
+    'createTweet' => 'Create tweet',
+    'close' => 'Close',
+    'coverimage' => 'Cover image',
+    'uploadimage' => 'Upload image',
+
 
 ];

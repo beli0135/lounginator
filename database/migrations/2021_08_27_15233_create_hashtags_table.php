@@ -18,7 +18,7 @@ class CreateHashtagsTable extends Migration
             $table->unsignedBigInteger('HTG_post_id');
             $table->string('HTG_hashtag');
             $table->timestamps();
-
+            
             $table->foreign('HTG_post_id')->references('id')->on('posts')->onDelete('cascade');
             $table->index('HTG_hashtag');
         });
