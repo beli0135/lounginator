@@ -4,12 +4,14 @@
             {{ __('Dashboard') }}
             @if (Auth()->user()->isEmployee())  
                 <div class="sm:flex space-x-2 pl-4">
-                    <a 
-                        href="#"
-                        class="bg-blue-500 uppercase text-xs text-gray-100
-                        font-extrabold py-2 px-5 rounded-3xl">
-                        {{ __('lang.usrmgt') }}
-                    </a>  
+                    @if (Auth()->user()->isAdmin())  
+                        <a 
+                            href="#"
+                            class="bg-blue-500 uppercase text-xs text-gray-100
+                            font-extrabold py-2 px-5 rounded-3xl">
+                            {{ __('lang.usrmgt') }}
+                        </a>  
+                    @endif
 
                     <a 
                         href="#"
