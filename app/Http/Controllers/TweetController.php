@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Hashtag;
+use App\Models\Notification;
 use Illuminate\Http\Request;
 use App\Models\Post;
+use App\Models\TweetLikes;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class TweetController extends Controller
 {
@@ -26,7 +29,8 @@ class TweetController extends Controller
         }   
         
         $whr =  '(posts.user_id not in (select URR_CdiUserRelated from user_relations where URR_CdiUser = '.$user_id.' and (URR_isMuted = 1 or URR_isBlocked = 1)) ' . 
-        ' OR posts.user_id not in (select URR_CdiUser from user_relations where URR_CdiUserRelated = '.$user_id.' and URR_isBlocked = 1 ))' .$nsfwWhere;
+            ' OR posts.user_id not in (select URR_CdiUser from user_relations where URR_CdiUserRelated = '.$user_id.' and URR_isBlocked = 1 ))' . 
+            $nsfwWhere . ' and posts.tweet is not null';
 
         $posts = Post::select('posts.*')
         ->whereRaw($whr)
@@ -122,7 +126,7 @@ class TweetController extends Controller
             'VALUES (?,?,?,?,?)',[$currentUser,$user_id,$request->id,now(),now()]);
         }
 
-        return redirect()->back()->with('message','Tweet reported');
+        return redirect()->back()->with('message',__('lang.tweetrepped'));
     }
 
     public function createTweet(Request $request)
@@ -131,6 +135,8 @@ class TweetController extends Controller
             'Tweet_body' => 'required|min:10',
             'cvrimg' => 'mimes:jpg,png,jpeg|max:2048',
         ]);
+
+        dd($request->reply);
 
         $inTweet = $request->Tweet_body;
         $words = explode(' ',$inTweet);
@@ -185,13 +191,16 @@ class TweetController extends Controller
 
         $post = array(
             'title' => '',
-            'article' => '',
             'slug' => '',
             'nsfw' => $nsfw,
             'tweet' => $tweet,
-            'image_path' => $imagePath,
             'user_id' => auth()->user()->id,
         );
+
+        if ($imagePath != '') {
+            $post['image_path'] = $imagePath;
+        }
+
         $pst = Post::create($post);
 
         foreach ($hashtags as $hshStr) {
@@ -199,6 +208,56 @@ class TweetController extends Controller
             Hashtag::create($hashtag);
         }
 
-        return redirect()->back()->with('message','Tweeted');
+        return redirect()->back()->with('message',__('lang.tweeted'));
+    }
+
+    public function destroy(request $request)
+    {
+        $post_id = $request->id;
+        $post = DB::table('posts')->where('id', $post_id);
+
+        $image = DB::table('posts')->where('id', $post_id)->value('image_path');
+        if (is_null($image) == false) {
+            Storage::delete('/public/' . $image);
+        }
+        $post->delete();
+
+        return redirect()->back()->with('message',__('lang.deleted'));
+    }
+
+    public function toggleLike(Request $request)
+    {
+        $post_id = $request->id;
+        $user_id = auth()->user()->id;
+        $notif = str_replace('%s','@'. auth()->user()->username, __('lang.userlikedpost'));
+
+        $tl = DB::table('tweet_likes')
+            ->where('TWL_cdiPost','=',$post_id)
+            ->where('TWL_cdiUser','=',$user_id)
+            ->get();
+
+        if ($tl->count() == 0) {
+            $tl = new TweetLikes();
+            $tl->TWL_cdiPost = $post_id;
+            $tl->TWL_cdiUser = $user_id;
+            $tl->save();
+
+            $ntf = new Notification();
+            $ntf->NTC_cdiUser = $user_id;
+            $ntf->NTC_cdiPost = $post_id;
+            $ntf->NTC_dssNotification = $notif;
+            $ntf->save();
+        } else {
+            DB::table('tweet_likes')
+                ->where('TWL_cdiPost','=',$post_id)
+                ->where('TWL_cdiUser','=',$user_id)
+                ->delete();
+
+            DB::table('notifications')
+                ->where('NTC_cdiUser','=',$user_id)
+                ->where('NTC_cdiPost','=',$post_id)
+                ->delete();
+        };
+        return redirect()->back();
     }
 }

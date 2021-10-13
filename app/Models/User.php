@@ -23,6 +23,7 @@ class User extends Authenticatable
         'email',
         'password',
         'invcode',
+        'status',
     ];
 
     /**
@@ -62,6 +63,27 @@ class User extends Authenticatable
     public function posts()
     {
         return $this->hasMany(Post::class, 'user_id');
+    }
+
+    public function hasRole($role)
+    {
+        $plucked = $this->roles->pluck('name');
+        return in_array($role, $plucked->all());   
+    }
+
+    public function isAdmin()
+    {
+        return $this->hasRole('Admin');
+    }
+
+    public function isModerator()
+    {
+        return $this->hasRole('Moderator');
+    }
+
+    public function isEmployee()
+    {
+        return ($this->isAdmin() || $this->isModerator());
     }
 
 }

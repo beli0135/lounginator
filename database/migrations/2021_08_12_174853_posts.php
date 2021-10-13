@@ -16,7 +16,8 @@ class Posts extends Migration
         Schema::create('posts', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('user_id');
-            $table->string('slug');
+            $table->unsignedInteger('thread_id')->default(0);
+            $table->string('slug')->nullable();
             $table->mediumText('tweet')->nullable();
             $table->string('title')->nullable();
             $table->longText('article')->nullable();

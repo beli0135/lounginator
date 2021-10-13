@@ -17,6 +17,8 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @var string
      */
+    
+    //public const HOME = 'tweets/index';
     public const HOME = '/dashboard';
 
     /**

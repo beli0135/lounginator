@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ArticleComment;
 use Illuminate\Http\Request;
 use App\Models\Post;
 use App\Models\Hashtag;
@@ -26,14 +27,30 @@ class PostsController extends Controller
      */
     public function index()
     {   
-        $nsfw = auth()->user()->profile->showNSFW();
+        $perPage = env('CUSTOM_TWEETS_PER_PAGE');
+        $user_id = auth()->user()->id;
+        $nsfwWhere = '';
 
-        if ($nsfw == 1) {
-            $posts = POST::wherein('nsfw',[0,1])->orderBy('updated_at','DESC')->limit(300)->Paginate(25);
-        } else {
-            $posts = POST::where('nsfw','=',0)->orderBy('updated_at','DESC')->limit(300)->paginate(25);    
-        }
+        if (env('CUSTOM_NSFW_EXISTS') == true) { 
+            $nsfw = auth()->user()->profile->showNSFW();
+            $nsfwWhere = '';
+            if ($nsfw == 1) {
+                $nsfwWhere = ' AND posts.nsfw in (0,1)';
+            } else {
+                $nsfwWhere = ' AND posts.nsfw = 0';
+            }
+        }   
         
+        $whr =  '(posts.user_id not in (select URR_CdiUserRelated from user_relations where URR_CdiUser = '.$user_id.' and (URR_isMuted = 1 or URR_isBlocked = 1)) ' . 
+            ' OR posts.user_id not in (select URR_CdiUser from user_relations where URR_CdiUserRelated = '.$user_id.' and URR_isBlocked = 1 ))' . 
+            $nsfwWhere . ' and posts.article is not null';
+
+        $posts = Post::select('posts.*')
+        ->whereRaw($whr)
+        ->orderBy('posts.updated_at','DESC')
+        ->limit(300)
+        ->paginate($perPage);
+    
         return view('posts.index')->with('posts',$posts);
     }
 
@@ -92,9 +109,12 @@ class PostsController extends Controller
             'article' => $request->input('article-textarea'),
             'slug' => $slug,
             'nsfw' => $nsfw,
-            'tweet' => $tweet,
             'user_id' => auth()->user()->id,
         );
+
+        if ($tweet != ''){
+            $post['tweet'] = $tweet; 
+        }
         
         if ($imagePath != '') {
             $post['image_path'] = $imagePath;
@@ -162,7 +182,6 @@ class PostsController extends Controller
             $nsfw = true;
         }
 
-        
 
          $post = array(
             'title' => $request->input('title'),
@@ -171,7 +190,7 @@ class PostsController extends Controller
         );
         
         if ($imagePath != '') {
-            $array['image_path'] = $imagePath;
+            $post['image_path'] = $imagePath;
         }
 
         Post::where('slug', $slug)->update($post);
@@ -196,4 +215,56 @@ class PostsController extends Controller
 
         return redirect('/posts');
     }
+
+    public function createArticleComment(Request $request)
+    {
+        $request->validate([
+            'Tweet_body' => 'required|min:3',
+            'cvrimg' => 'mimes:jpg,png,jpeg|max:2048',
+        ]);
+
+        $post_id = $request->post_id;
+        $user_id = auth()->user()->id;
+        $user_username = DB::table('users')->where('id',$user_id)->value('username');
+        $user_name = DB::table('users')->where('id',$user_id)->value('name');
+        $user_profile_pic = DB::table('profiles')->where('user_id',$user_id)->value('image');
+
+        $comment = $request->Tweet_body;
+
+        if ($request->isNSFW == null) {
+            $nsfw = false;
+        } else {
+            $nsfw = true;
+        }
+
+        $imagePath = '';
+        if ($request->cvrimg != null) 
+        {
+            $imagePath = $request->cvrimg->store('uploads','public');
+        }
+
+        $AComment = array(
+            'ACM_cdiPost' => $post_id,
+            'ACM_dssUsername' => $user_username,
+            'ACM_dssUserFullName' => $user_name,
+            'ACM_dssProfileImage' => $user_profile_pic,
+            'ACM_dssComment' => $comment,
+            'ACM_nsfw' => $nsfw,
+            'ACM_created_at' => now(),
+            'ACM_updated_at' => now(),
+           
+        );
+
+        if ($imagePath != '') {
+            $AComment['ACM_image_path'] = $imagePath;
+        }
+
+        ArticleComment::create($AComment);
+
+        return redirect()->back()->with('message',__('lang.commented'));
+    }
+
+    
+
+
 }

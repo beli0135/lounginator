@@ -1,6 +1,7 @@
 <x-app-layout>
+  
     <x-slot name="header">
-        <div class="fixed hidden inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full"id="my-modal"></div>
+        <div class="fixed hidden inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full" id="my-modal"></div>
 
         <div class="space-x-4 -my-px ml-8 flex w-full">    
             <h2 class="font-semibold text-xl text-gray-800 leading-tight ">
@@ -19,13 +20,15 @@
                 </a>
             </div>
             <div>
-                <a class="modal-open" title="{{ __('lang.createTweet') }}">
+                <a class="modal-open cursor-pointer" title="{{ __('lang.createTweet') }}">
                         <img class="pl-1" src="{{ asset('/images/writing.png') }}" alt="{{ __('lang.tweet') }}" width="24">
                 </a>        
             </div>
             
         </div>
     </x-slot>
+
+  
 
     <div class="flex py-12 flex-col-3 ">
         <div class="bg-gray-300 w-1/4 hidden md:block">
@@ -124,14 +127,30 @@
                                             <input type="hidden" name="user_id" value="{{ $post->user_id }}">
                                         </x-dropdown-link>
                                     </form>  
+                                    
+                                    @if (isset(Auth::user()->id) && (Auth::user()->id == $post->user_id))
+                                        <form name="deltwform" method="POST" action="{{ route('tweets.deleteTweet') }}">
+                                            @csrf
+                                            <x-dropdown-link :href="route('tweets.deleteTweet')"
+                                                onclick="event.preventDefault();
+                                                this.closest('form').submit();">    
+                                                <div class="flex flex-col-2 w-32 space-x-2" >
+                                                    <img src="{{ asset('/images/trash.png') }}" width="24">
+                                                    <p>{{ __('lang.delete') }}</p>
+                                                </div>
+                                                <input type="hidden" name="id" value="{{ $post->id }}">
+                                                <input type="hidden" name="user_id" value="{{ $post->user_id }}">
+                                            </x-dropdown-link>
+                                        </form>  
+                                    @endif
                                 </x-slot>    
                             </x-dropdown>
                             <div class="w-2"></div>
                         </div>  
                         <div>
-                            <p class="text-l text-gray-700 pt-1 pb-5 leading-8 font-light">
+                            <p class="text-l text-gray-700 pt-1 pb-2 leading-8 font-light">
                                 @php
-                                    if ($post->image_path !== ''){
+                                    if (is_null($post->image_path) == false) {
                                         $post->tweet = $post->tweet . '<br>  <a href="'. env('APP_URL') . '/storage/' . 
                                             $post->image_path .'"><img src="'. asset('/storage/'.$post->image_path) . '" width="300"></a>' ;
                                     }
@@ -139,7 +158,35 @@
                                 {!! html_entity_decode( $post->tweet) !!}
                             </p>
                         </div>
-                        
+                        <div class="flex flex-col-5 justify-center">
+                            <div class="text-l text-gray-700 pb-4 ">
+                                <a class="modal-open cursor-pointer" title="{{ __('lang.replyTweet') }}">
+                                   
+                                    <img  src="{{ asset('/images/speech-bubble.png') }}" width="16" height="16">
+                                </a>   
+                            </div>
+                            <div class="pl-2 pr-10"></div>
+                            <div>
+                                <form name="deltwform" method="POST" action="{{ route('tweets.toggleLike') }}">
+                                    @csrf
+                                    @method('POST')
+                                    <a href="{{ route('tweets.toggleLike') }}" onclick="event.preventDefault();
+                                    this.closest('form').submit();">
+                                        @php
+                                            if ($post->tweetHasYourLike() > 0) {
+                                                $likeimg = '/images/like-full.png';
+                                            } else {
+                                                $likeimg = '/images/like-empty.png';
+                                            }
+                                        @endphp
+                                        <img src="{{ asset($likeimg) }}"  width="16" height="16">
+                                    </a>    
+                                    <input type="hidden" name="id" value="{{ $post->id }}">
+                                </form>    
+                            </div>
+                            <div class="pl-1 text-xs font-light text-gray-700">{{ $post->tweetLikeCount() }}</div>
+                            <div class="w-full"></div>
+                        </div>
                     </div>
                 </div>
                 <hr>
@@ -174,5 +221,7 @@
         </div>
     </div>
     @include('tweets.create')
+    
+   
 </x-app-layout>
 

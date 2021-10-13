@@ -17,7 +17,7 @@
         <div class="modal-content py-4 text-left px-6">
             <!--Title-->
             <div class="flex justify-between items-center pb-3">
-                <p class="text-2xl font-bold">{{ __('lang.createTweet') }}</p>
+                <p class="text-2xl font-bold">{{ __('lang.createcomment') }}</p>
                 <div class="modal-close cursor-pointer z-50">
                     <svg class="fill-current text-black" xmlns="http://www.w3.org/2000/svg" width="18" height="18"
                         viewBox="0 0 18 18">
@@ -30,14 +30,13 @@
 
             <div class="modal-body">
                 
-                <form method="POST" action="{{ route('createTweet') }}" enctype="multipart/form-data">
+                <form method="POST" action="{{ route('createArticleComment') }}" enctype="multipart/form-data">
                     @csrf
                     {{-- @method('PUT') --}}
 
                     <div class="form-group row">
                         <div class="col-md-6">
-                            <textarea name="Tweet_body" id="Tweet_body" cols="45" rows="5" maxlength="250" autofocus placeholder="Tweet minimum 10 letters..."></textarea>
-                            {{-- <input type="text" name="reply" value="{{ $replyModal }}" class="hidden"> --}}
+                            <textarea name="Tweet_body" id="Tweet_body" cols="45" rows="5" maxlength="250" autofocus placeholder="Comment minimum 3 letters..."></textarea>
                         </div>
                     </div>
 
@@ -53,17 +52,18 @@
                         <div class="w-full">
                             @if (env('CUSTOM_NSFW_EXISTS') == true)
                                 <label for="isNSFW" class="inline-flex items-center">
-                                    <input id="isNSFW" type="checkbox" class="ml-4 rounded border-gray-300 text-indigo-600 
+                                    <input id="isNSFW" name="isNSFW" type="checkbox" class="ml-4 rounded border-gray-300 text-indigo-600 
                                     shadow-sm focus:border-indigo-300 
-                                    focus:ring focus:ring-indigo-200 focus:ring-opacity-50" name="nsfw">
+                                    focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
                                     <span class="ml-2 text-sm text-red-600 font-extrabold">{{ __('lang.NSFWcontent') }}</span>
                                 </label>
                             @endif
                         </div>
                         <div class="">
                             <button type="submit"
-                                class="modal-close px-4 bg-indigo-500 p-3 rounded-lg text-white hover:bg-indigo-400">{{ __('lang.tweet') }}</button>
+                                class="modal-close px-4 bg-indigo-500 p-3 rounded-lg text-white hover:bg-indigo-400">{{ __('lang.post') }}</button>
                         </div>
+                        <input type="hidden" name="post_id" id="post_id" value="{{ $post->id }}">
                     </div>
                 </form>
             </div>
