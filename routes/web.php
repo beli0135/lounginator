@@ -22,6 +22,7 @@ Route::get('/', function () {
 });
 
 Route::group(['middleware' => 'auth'], function() {
+    
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
@@ -37,9 +38,11 @@ Route::group(['middleware' => 'auth'], function() {
     //posts
 
     Route::resource('/posts', PostsController::class);
+    Route::post('createArticleComment',[PostsController::class, 'createArticleComment'])->name('createArticleComment');
     
 
     //tweets
+    
     Route::get('/tweets/index', [TweetController::class, 'index'])->name('tweets.index');
     Route::get('/tweets/h/{param}', [TweetController::class, 'indexHashtag'])->name('tweets.indexHashtag');
     
@@ -49,6 +52,8 @@ Route::group(['middleware' => 'auth'], function() {
     Route::post('4_tw_report', [TweetController::class, 'reportTweet'])->name('tweets.reportTweet');
     
     Route::post('createTweet',[TweetController::class, 'createTweet'])->name('createTweet');
+    Route::post('deleteTweet',[TweetController::class, 'destroy'])->name('tweets.deleteTweet');
+    Route::post('toggleLike',[TweetController::class, 'toggleLike'])->name('tweets.toggleLike');
 
     
 });
