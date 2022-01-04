@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\ImageController;
 use App\Http\Controllers\PagesController;
 use App\Http\Controllers\PostsController;
 use App\Http\Controllers\TweetController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -27,6 +28,9 @@ Route::group(['middleware' => 'auth'], function() {
         return view('dashboard');
     })->name('dashboard');
 
+    //admin
+    //Route::resource('/admin/user', UserController::class);
+    Route::get('/admin/user/index', [UserController::class, 'index'])->name('admin.userindex');
 
     route::view('profile','profile')->name('profile');
     route::put('profile','App\Http\Controllers\ProfileController@store')->name('profile.update');

@@ -6,7 +6,7 @@
                 <div class="sm:flex space-x-2 pl-4">
                     @if (Auth()->user()->isAdmin())  
                         <a 
-                            href="#"
+                            href="{{route('admin.userindex')}}";
                             class="bg-blue-500 uppercase text-xs text-gray-100
                             font-extrabold py-2 px-5 rounded-3xl">
                             {{ __('lang.usrmgt') }}

@@ -24,6 +24,7 @@ class User extends Authenticatable
         'password',
         'invcode',
         'status',
+        'reactivate_at'
     ];
 
     /**
