@@ -23,6 +23,7 @@ class CreateUsersTable extends Migration
             $table->string('invited_by')->nullable();
             $table->boolean('active')->default(true);
             $table->mediumText('deactivateReason')->nullable();
+            $table->timestamp('reactivate_at')->nullable();
             $table->rememberToken();
             $table->timestamps();
 
