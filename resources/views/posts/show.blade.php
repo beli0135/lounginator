@@ -33,16 +33,7 @@
                     
                     </form>
                 </div>
-            @else
-                <div>
-                    <a class="modal-open" title="{{ __('lang.createcomment') }}">
-                            <img class="pl-1 cursor-pointer" src="{{ asset('/images/speech-bubble.png') }}"  width="24">
-                    </a>        
-                </div>
-                
             @endif
-
-            
         </div>
     </x-slot>
 
@@ -64,15 +55,24 @@
                         </span>
 
                         <p class="text-xl text-gray-700 pt-1 pb-5 leading-8 font-light">
-                            {!! html_entity_decode( $post->article) !!}
+                            @if ($post->title != '' ))
+                                {!! html_entity_decode( $post->article) !!}
+                            @else
+                                {!! html_entity_decode( $post->tweet) !!}
+                            @endif
                         </p>
 
                     </div>    
                 </div>
 
                 <div class="p-6 bg-white border-b border-gray-200 pb-4" >
-                    <div class="pb-4">
+                    <div class="pb-4 flex">
                         <p class="text-gray-800 font-bold">{{ $post->articleCommentCount()}} Comments</p>
+                        <div class="w-5"></div>
+                        <a class="modal-open" title="{{ __('lang.createcomment') }}">
+                                <img class="pl-1 cursor-pointer" src="{{ asset('/images/speech-bubble.png') }}"  width="24">
+                        </a>        
+                        
                     </div>
                     <div class="">
                         @foreach ($post->articleComments as $mainComment)

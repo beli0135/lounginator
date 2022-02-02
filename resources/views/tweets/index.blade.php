@@ -148,22 +148,29 @@
                             <div class="w-2"></div>
                         </div>  
                         <div>
-                            <p class="text-l text-gray-700 pt-1 pb-2 leading-8 font-light">
-                                @php
-                                    if (is_null($post->image_path) == false) {
-                                        $post->tweet = $post->tweet . '<br>  <a href="'. env('APP_URL') . '/storage/' . 
-                                            $post->image_path .'"><img src="'. asset('/storage/'.$post->image_path) . '" width="300"></a>' ;
-                                    }
-                                @endphp
-                                {!! html_entity_decode( $post->tweet) !!}
-                            </p>
+                            <a href="/posts/{{ $post->slug }}" class="w-full">
+                                <p class="text-l text-gray-700 pt-1 pb-2 leading-8 font-light">
+                                    @php
+                                        if (is_null($post->image_path) == false) {
+                                            $post->tweet = $post->tweet . '<br>  <a href="'. env('APP_URL') . '/storage/' . 
+                                                $post->image_path .'"><img src="'. asset('/storage/'.$post->image_path) . '" width="300"></a>' ;
+                                        }
+                                    @endphp
+                                    {!! html_entity_decode( $post->tweet) !!}
+                                </p>
+                            </a>
                         </div>
                         <div class="flex flex-col-5 justify-center">
                             <div class="text-l text-gray-700 pb-4 ">
-                                <a class="modal-open cursor-pointer" title="{{ __('lang.replyTweet') }}">
-                                   
+                                {{-- <a class="modal-open cursor-pointer" title="{{ __('lang.replyTweet') }}">
                                     <img  src="{{ asset('/images/speech-bubble.png') }}" width="16" height="16">
-                                </a>   
+                                </a>    --}}
+                                <div class="flex flex-col-2">
+                                    <a href="/posts/{{ $post->slug }}" class="w-full"> 
+                                        <img  src="{{ asset('/images/speech-bubble.png') }}" width="16" height="16">
+                                    </a>    
+                                    <div class="pl-1 text-xs font-light text-gray-700">{{ $post->articleCommentCount() }}</div>
+                                </div>
                             </div>
                             <div class="pl-2 pr-10"></div>
                             <div>

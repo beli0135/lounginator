@@ -48,6 +48,7 @@ Route::group(['middleware' => 'auth'], function() {
     //tweets
     
     Route::get('/tweets/index', [TweetController::class, 'index'])->name('tweets.index');
+
     Route::get('/tweets/h/{param}', [TweetController::class, 'indexHashtag'])->name('tweets.indexHashtag');
     
     Route::post('1_tw_fav', [TweetController::class, 'makeUserFavorite'])->name('tweets.makeUserFavorite');

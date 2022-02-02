@@ -41,6 +41,7 @@ class TweetController extends Controller
         return view('tweets.index')->with('posts',$posts);
     }
 
+
     public function indexHashtag($hashtag)
     {
         $perPage = env('CUSTOM_TWEETS_PER_PAGE'); 
@@ -136,8 +137,6 @@ class TweetController extends Controller
             'cvrimg' => 'mimes:jpg,png,jpeg|max:2048',
         ]);
 
-        dd($request->reply);
-
         $inTweet = $request->Tweet_body;
         $words = explode(' ',$inTweet);
 
@@ -189,9 +188,13 @@ class TweetController extends Controller
             
         // }
 
+        $bytes = random_bytes(10);
+        $slug = 'tw'.bin2hex($bytes);
+        
+
         $post = array(
             'title' => '',
-            'slug' => '',
+            'slug' => $slug,
             'nsfw' => $nsfw,
             'tweet' => $tweet,
             'user_id' => auth()->user()->id,
